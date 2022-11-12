@@ -8,30 +8,36 @@ import InputLabel from '@mui/material/InputLabel';
 import { writeToDatabase } from '../config/firebasemethod';
 import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import '../screens/checkAdmin.css'
+import '../screens/Admin Screen/checkAdmin.css'
+import UserAppBar from '../components/UserNavbar';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const Registration = () => {
     const [studentObj, setStudentObj] = useState({});
+    const [buttonLoading, setButtonLoading] = useState(false);
     const navigate = useNavigate();
 
     const submit = () => {
-        if (Object.values(studentObj).length >= 8) {
-            writeToDatabase(studentObj)
-                .then((success) => {
-                    // Signed in 
-                    alert(success);
-                    navigate("/showReg", {
-                        state: studentObj
-                    });
-                })
-                .catch((error) => {
-                    const errorMessage = error.message;
-                    const errorMessageUp = errorMessage.toUpperCase();
-                    alert(errorMessageUp)
+        setButtonLoading(true)
+        // if (Object.values(studentObj).length >= 8) {
+        writeToDatabase(studentObj)
+            .then((success) => {
+                // Signed in 
+                alert(success);
+                navigate("/showReg", {
+                    state: studentObj
                 });
-        } else {
-            alert('ALL FIELDS MUST BE FILLED')
-        }
+                setButtonLoading(false)
+            })
+            .catch((error) => {
+                const errorMessage = error.message;
+                const errorMessageUp = errorMessage.toUpperCase();
+                alert(errorMessageUp)
+                setButtonLoading(false)
+            });
+        // } else {
+        //     alert('ALL FIELDS MUST BE FILLED')
+        // }
     }
 
     const selectValHandler = (e) => {
@@ -40,6 +46,10 @@ const Registration = () => {
     // console.log(studentObj)
     return (
         <div className='main-regis'>
+            <UserAppBar />
+            <Box sx={{ marginTop: 2 }}>
+                <h1 className='regisdetail'>Registration</h1>
+            </Box>
             <Box
                 component="form"
                 sx={{
@@ -86,14 +96,16 @@ const Registration = () => {
                     <TextField label="Date of Birth" onChange={e => setStudentObj({ ...studentObj, dob: e.target.value })} variant="outlined" />
                 </Box>
                 <Box>
-                    <Button onClick={submit}>
-                        Submit
-                    </Button>
-                </Box>
-                <Box>
-                    <Button variant='contained' onClick={() => navigate('/showCourse')}>
-                        View Courses
-                    </Button>
+                    {buttonLoading
+                        ?
+                        <Button>
+                            <CircularProgress />
+                        </Button>
+                        :
+                        <Button onClick={submit}>
+                            Submit
+                        </Button>
+                    }
                 </Box>
             </Box>
         </div>

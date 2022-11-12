@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ReadFromDatabase } from "../config/firebasemethod";
+import { ReadFromDatabase } from "../../config/firebasemethod";
 import Table from 'react-bootstrap/Table';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';

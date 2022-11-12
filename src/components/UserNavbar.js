@@ -17,7 +17,7 @@ import { useNavigate } from 'react-router-dom';
 
 const drawerWidth = 240;
 
-function DrawerAppBar(props) {
+function UserAppBar(props) {
 
     const navigate = useNavigate();
     const { window } = props;
@@ -30,16 +30,17 @@ function DrawerAppBar(props) {
     const drawer = (
         <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
             <Typography variant="h6" sx={{ my: 2 }}>
-                Admin Panel
+                User Screenss
             </Typography>
             <Divider />
             <List>
                 {[{
-                    route: '/registrationDetail', name: 'Registration Details'
+                    route: '/', name: 'Registration'
                 },
-                { route: '/quizform', name: 'Quiz Form' },
-                { route: '/quizdetail', name: 'Quiz Detail' },
-                { route: '/course', name: 'Courses' }].map((page, index) => (
+                {
+                    route: '/showCourse', name: 'Courses'
+                },
+                { route: '/quiz', name: 'Attempt Quiz' }].map((page, index) => (
                     <ListItem key={index} disablePadding>
                         <ListItemButton sx={{ textAlign: 'center' }}>
                             <ListItemText onClick={() => navigate(page.route)} primary={page.name} />
@@ -77,16 +78,17 @@ function DrawerAppBar(props) {
                         component="div"
                         sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
                     >
-                        Admin Panel
+                        User Screens
                     </Typography>
                     <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
                         {
                             [{
-                                route: '/registrationDetail', name: 'Registration Details'
+                                route: '/', name: 'Registration'
                             },
-                            { route: '/quizform', name: 'Quiz Form' },
-                            { route: '/quizdetail', name: 'Quiz Detail' },
-                            { route: '/course', name: 'Courses' }].map((page, index) => (
+                            {
+                                route: '/showCourse', name: 'Courses'
+                            },
+                            { route: '/quiz', name: 'Attempt Quiz' }].map((page, index) => (
                                 <Button key={index} onClick={() => navigate(page.route)} sx={{ color: '#fff' }}>
                                     {page.name}
                                 </Button>
@@ -114,16 +116,12 @@ function DrawerAppBar(props) {
             </Box>
             <Box component="main" className='adminmaintext'>
                 <Toolbar />
-                <Typography>
-                    <h1>Be Carefull!</h1>
-                    <h2>You are in Admin Panel.</h2>
-                </Typography>
             </Box>
         </Box >
     );
 }
 
-DrawerAppBar.propTypes = {
+UserAppBar.propTypes = {
     /**
      * Injected by the documentation to work in an iframe.
      * You won't need it on your project.
@@ -131,4 +129,4 @@ DrawerAppBar.propTypes = {
     window: PropTypes.func,
 };
 
-export default DrawerAppBar;
+export default UserAppBar;
