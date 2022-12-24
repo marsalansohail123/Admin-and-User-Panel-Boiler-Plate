@@ -19,7 +19,7 @@ const Quiz = () => {
     const [questionCount, setQuestionCount] = useState(0);
     const [score, setScore] = useState(0);
     const [isShowResult, setIsShowResult] = useState(false);
-    const [showQuiz, setShowQuiz] = useState(true);
+    const [showQuiz, setShowQuiz] = useState(false);
     const [isLoading, setLoading] = useState(true);
     const [startQuiz, setStartQuiz] = useState('');
     // console.log(startQuiz)
@@ -52,7 +52,7 @@ const Quiz = () => {
             setScore(score + 1)
         }
         if (questionCount + 1 == data.length) {
-            setIsShowResult(true);
+            setShowQuiz(true);
         } else {
             setQuestionCount(questionCount + 1)
         }
@@ -81,6 +81,7 @@ const Quiz = () => {
                 .then((success) => {
                     // alert(success)
                     setShowQuiz(false)
+                    setIsShowResult(true)
                 })
                 .catch((err) => {
                     console.log(err)
@@ -93,56 +94,73 @@ const Quiz = () => {
         <div>
             <UserAppBar />
             <Box>
-                {
-                    isShowResult
-                        ?
-                        <Box sx={{ display: 'flex', justifyContent: 'center', padding: 5 }}>
-                            <Card style={{ width: '18rem' }}>
-                                <Card.Body>
-                                    <Card.Title>Quiz Result</Card.Title>
-                                    <Card.Subtitle className="mb-2 text-muted">{perc.toFixed(2)}%</Card.Subtitle>
-                                    <Card.Text>
-                                        {resultText}
-                                    </Card.Text>
-                                    <Card.Link>Play Again</Card.Link>
-                                    <Card.Link onClick={() => navigate('/')}>Back to Registration</Card.Link>
-                                </Card.Body>
-                            </Card>
-                        </Box>
-                        :
-                        <div>
-                            <Box className='quiz_headings text-center mt-2'>
-                                <h1 className='text-center bg-secondary text-white'>HTML, CSS Quiz</h1>
-                                <h2><Badge>This Quiz Makes Your Code More Perfect.</Badge></h2>
-                            </Box>
-                            <Box className='container mt-5'>
-                                {
-                                    isLoading
-                                        ?
-                                        <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 2 }}>
-                                            <CircularProgress />
-                                        </Box>
-                                        :
-                                        <Box>
-                                            <h5>Question No {questionCount + 1}:</h5>
-                                            <h3 className='ms-3'>{data[questionCount].q}</h3>
-                                            <Box sx={{ display: "flex", justifyContent: 'space-around', flexWrap: "wrap" }}>
-                                                {data[questionCount].options.map((e, i) =>
-                                                    <Box key={i} sx={{ paddingTop: 5 }}>
-                                                        <Button onClick={() => checkQuestion(e, data[questionCount].correctAnswer)} variant="outline-light text-dark">
-                                                            {e}
-                                                        </Button>
+                {showQuiz
+                    ?
+                    <Box sx={{ display: 'flex', justifyContent: 'center', padding: 5 }}>
+                        <Card style={{ width: '18rem' }}>
+                            <Card.Body>
+                                <Card.Title>Firstly, Enter Your Name.</Card.Title>
+                                <Card.Subtitle className="mb-3 mt-3 text-muted">
+                                    <TextField label='Enter Your Real Name' onChange={(e) => setStartQuiz(e.target.value)} />
+                                </Card.Subtitle>
+                                <Card.Link><Button onClick={sendQuizDetail}>Start Quiz</Button></Card.Link>
+                            </Card.Body>
+                        </Card>
+                    </Box>
+                    :
+                    <Box>
+                        {
+                            isShowResult
+                                ?
+                                <Box sx={{ display: 'flex', justifyContent: 'center', padding: 5 }}>
+                                    <Card style={{ width: '18rem' }}>
+                                        <Card.Body>
+                                            <Card.Title>Quiz Result</Card.Title>
+                                            <Card.Subtitle className="mb-2 text-muted">{perc.toFixed(2)}%</Card.Subtitle>
+                                            <Card.Text>
+                                                {resultText}
+                                            </Card.Text>
+                                            <Card.Link>Play Again</Card.Link>
+                                            <Card.Link onClick={() => navigate('/')}>Back to Registration</Card.Link>
+                                        </Card.Body>
+                                    </Card>
+                                </Box>
+                                :
+                                <div>
+                                    <Box className='quiz_headings text-center mt-2'>
+                                        <h1 className='text-center bg-secondary text-white'>HTML, CSS Quiz</h1>
+                                        <h2><Badge>This Quiz Makes Your Code More Perfect.</Badge></h2>
+                                    </Box>
+                                    <Box className='container mt-5'>
+                                        {
+                                            isLoading
+                                                ?
+                                                <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 2 }}>
+                                                    <CircularProgress />
+                                                </Box>
+                                                :
+                                                <Box>
+                                                    <h5>Question No {questionCount + 1} / {data.length}:</h5>
+                                                    <h3 className='ms-3'>{data[questionCount].q}</h3>
+                                                    <Box sx={{ display: "flex", justifyContent: 'space-around', flexWrap: "wrap" }}>
+                                                        {data[questionCount].options.map((e, i) =>
+                                                            <Box key={i} sx={{ paddingTop: 5 }}>
+                                                                <Button onClick={() => checkQuestion(e, data[questionCount].correctAnswer)} variant="outline-light text-dark">
+                                                                    {e}
+                                                                </Button>
+                                                            </Box>
+                                                        )}
                                                     </Box>
-                                                )}
-                                            </Box>
-                                            <Box sx={{ display: 'flex', justifyContent: 'center', paddingTop: 6 }}>
-                                                <Button variant='outline-dark' onClick={() => checkQuestion(data[questionCount])}>Skip Question</Button>
-                                            </Box>
-                                        </Box>
-                                }
-                            </Box>
+                                                    <Box sx={{ display: 'flex', justifyContent: 'center', paddingTop: 6 }}>
+                                                        <Button variant='outline-dark' onClick={() => checkQuestion(data[questionCount])}>Skip Question</Button>
+                                                    </Box>
+                                                </Box>
+                                        }
+                                    </Box>
 
-                        </div>
+                                </div>
+                        }
+                    </Box>
                 }
             </Box>
         </div >
@@ -160,7 +178,7 @@ export default Quiz;
 
 // const Quiz = () => {
 
-//     const [quizData, setQuizData] = useState([
+// const [quizData, setQuizData] = useState([
 //         {
 //             question: "Html Stands For _______________________",
 //             options: [

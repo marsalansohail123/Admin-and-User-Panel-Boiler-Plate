@@ -24,3 +24,15 @@ body {
     border-radius: 8px;
     padding: 0 2px;
 }
+
+.leftSide {
+    color: black;
+    font-weight: normal;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.rightSide {
+    color: green;
+    font-weight: bold;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}

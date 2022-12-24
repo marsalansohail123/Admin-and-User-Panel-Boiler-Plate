@@ -1,4 +1,4 @@
-import { getDatabase, ref, set, push, onValue, update } from "firebase/database";
+import { getDatabase, ref, set, push, onValue, update, remove } from "firebase/database";
 import app from "./firebaseconfig";
 
 const dbStuData = getDatabase(app);
@@ -84,28 +84,30 @@ const ReadFromDatabase = (nodeName, id) => {
 }
 
 
-// const updateData = (newData, id) => {
+const updateData = (newData) => {
+    console.log(newData)
+    const reference = ref(dbStuData, `course data/${newData.id}`)
+    update(reference, newData)
+        .then(() => {
+            console.log("Success")
+        })
+        .catch(() => {
+            console.log("Error")
+        })
+    // console.log(reference)
+}
 
-//     console.log(newData)
-//     const reference = ref(dbStuData, `course data/${newData.id}`)
-
-//     set(reference, newData)
-//         .then((res) => {
-//             console.log("res")
-//         })
-//         .catch((err) => {
-//             console.log("err")
-//         })
-
-//     // console.log(reference)
-
-// }
+const DeleteDataFromDataBase = (nodeName) => {
+    const reference = ref(dbStuData, `${nodeName}`)
+    remove(reference).then(() => console.log("Deleted")).catch(err => console.error(err))
+}
 
 export {
     writeToDatabase,
     ReadFromDatabase,
     addCourse,
     addQuiz,
-    quizDetail
-    // updateData
+    quizDetail,
+    updateData,
+    DeleteDataFromDataBase
 }
